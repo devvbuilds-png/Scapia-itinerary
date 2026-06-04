@@ -101,6 +101,10 @@ export default function ScapiaHeader({
     navigate(-1);
   };
 
+  const handleHome = () => {
+    navigate("/");
+  };
+
   return (
     <div
       style={{
@@ -130,8 +134,21 @@ export default function ScapiaHeader({
           ‹
         </CircleButton>
       )}
-      <div style={{ position: "absolute", left: 0, right: 0, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
-        <Wordmark accent={accent} light={overHero} />
+      <div style={{ position: "absolute", left: 64, right: 64, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+        <button
+          aria-label="Go to profile home"
+          onClick={handleHome}
+          style={{
+            border: "none",
+            background: "transparent",
+            padding: "8px 10px",
+            margin: -8,
+            cursor: "pointer",
+            pointerEvents: "auto",
+          }}
+        >
+          <Wordmark accent={accent} light={overHero} />
+        </button>
       </div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", zIndex: 1 }}>
         {right || (demo ? <DemoChip /> : <div style={{ width: 40 }} />)}
