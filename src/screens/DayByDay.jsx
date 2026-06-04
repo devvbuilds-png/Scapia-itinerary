@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../store/AppContext";
 import { ScapiaHeader, Badge, CoinPill, CoinMedallion, PrimaryButton } from "../components/ui";
 import { cityImage, hotelImage, experienceImage } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, PAGE_PAD, HERO_BLEED, STICKY_BELOW_HEADER } from "../theme";
+import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD, HERO_BLEED, STICKY_BELOW_HEADER } from "../theme";
 
 const FOOD_DINING_CATS = new Set(["Food", "Dining"]);
 const SLOT_ORDER = { "early-morning": 0, morning: 1, midday: 2, afternoon: 3, evening: 4, night: 5 };
@@ -253,7 +253,7 @@ export default function DayByDay() {
 
   if (!constraintObject) {
     return (
-      <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
+      <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
         <div style={{ padding: 32, textAlign: "center", fontFamily: FONT.sans }}>
           <div style={{ fontSize: 13, color: C.sub, marginBottom: 16 }}>No itinerary found. Complete onboarding first.</div>
           <PrimaryButton variant="coral" full={false} onClick={() => navigate("/summary")}>← Back</PrimaryButton>
@@ -283,7 +283,7 @@ export default function DayByDay() {
     itin = autoItineraries?.[itinIndex];
     if (!itin) {
       return (
-        <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
+        <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
           <div style={{ padding: 32, textAlign: "center", fontFamily: FONT.sans }}>
             <div style={{ fontSize: 13, color: C.sub, marginBottom: 16 }}>Itinerary not found.</div>
             <PrimaryButton variant="coral" full={false} onClick={() => navigate("/auto-compare")}>← Back</PrimaryButton>
@@ -324,7 +324,7 @@ export default function DayByDay() {
   const coinsEarned = !isManual ? Math.round(finalPayable * 0.2) : 0;
 
   return (
-    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
       <ScapiaHeader accent="itinerary" onBack={() => navigate(backPath)} transparent />
 
       {/* immersive themed hero (bleeds up under the transparent header) */}

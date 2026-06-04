@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../store/AppContext";
 import { ScapiaHeader, Badge, CoinPill, PrimaryButton } from "../components/ui";
 import { cityImage } from "../data/images";
-import { C, FONT, RADIUS, PAGE_PAD } from "../theme";
+import { C, FONT, RADIUS, NAV_SAFE_PAD } from "../theme";
 
 const CITY_NAMES = { BKK: "Bangkok", HKT: "Phuket", CNX: "Chiang Mai" };
 
@@ -223,7 +223,7 @@ export default function AutoBuildCompare() {
 
   if (!autoItineraries?.length || !constraintObject) {
     return (
-      <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
+      <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
         <ScapiaHeader accent="itinerary" backTo="/summary" />
         <div style={{ textAlign: "center", padding: "60px 20px", color: C.body, fontFamily: FONT.sans }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🤖</div>
@@ -238,7 +238,7 @@ export default function AutoBuildCompare() {
   const cityNames = cities.map((c) => CITY_NAMES[c] ?? c).join(" → ");
 
   return (
-    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD, position: "relative" }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD, position: "relative" }}>
       {/* soft aurora behind the glass cards */}
       <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
         <div style={{ position: "absolute", top: 150, left: -50, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(232,73,29,0.22), transparent 70%)", filter: "blur(8px)" }} />
