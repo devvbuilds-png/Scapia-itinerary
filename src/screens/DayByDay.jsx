@@ -248,10 +248,13 @@ function ExpSlotCard({ item }) {
 export default function DayByDay() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { autoItineraries, manualItinerary, constraintObject, selectedUser, setManualItinerary, saveToWishlist } = useApp();
+  const { autoItineraries, manualItinerary, constraintObject, selectedUser, setManualItinerary, saveToWishlist, wishlist } = useApp();
   const [selectedDayIdx, setSelectedDayIdx] = useState(0);
+  const savedIndex = Number.isInteger(state?.savedIndex) ? state.savedIndex : null;
+  const savedItem = savedIndex != null ? wishlist?.[savedIndex] : null;
+  const activeConstraint = savedItem?.constraintObject ?? constraintObject;
 
-  if (!constraintObject) {
+  if (!activeConstraint) {
     return (
       <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
         <div style={{ padding: 32, textAlign: "center", fontFamily: FONT.sans }}>
@@ -262,11 +265,25 @@ export default function DayByDay() {
     );
   }
 
-  const isManual = state?.flow === "manual";
+  const isManual = state?.flow === "manual" || savedItem?.type === "manual";
   const itinIndex = parseInt(state?.itinIndex ?? 0, 10);
   let itin, themeColor, themeName, backPath;
 
-  if (isManual) {
+  if (savedItem) {
+    itin = {
+      ...savedItem,
+      flightSelections: savedItem.flightSelections ?? {},
+      flightLegs: savedItem.flightLegs ?? [],
+      stays: savedItem.stays ?? {},
+      activities: savedItem.activities ?? (savedItem.experiences ?? []).filter((e) => !FOOD_DINING_CATS.has(e.category)),
+      foodDining: savedItem.foodDining ?? (savedItem.experiences ?? []).filter((e) => FOOD_DINING_CATS.has(e.category)),
+      experiences: savedItem.experiences ?? [],
+      cityStays: savedItem.constraintObject?.cityStays,
+    };
+    themeColor = savedItem.color ?? (savedItem.type === "auto" ? C.coral : C.navy);
+    themeName = savedItem.name ?? savedItem.theme ?? savedItem.title ?? "Saved Itinerary";
+    backPath = "/my-itineraries";
+  } else if (isManual) {
     itin = {
       flightSelections: manualItinerary.flightSelections ?? {},
       flightLegs: manualItinerary.flightLegs ?? [],
@@ -274,7 +291,7 @@ export default function DayByDay() {
       activities: (manualItinerary.experiences ?? []).filter((e) => !FOOD_DINING_CATS.has(e.category)),
       foodDining: (manualItinerary.experiences ?? []).filter((e) => FOOD_DINING_CATS.has(e.category)),
       experiences: manualItinerary.experiences ?? [],
-      cityStays: constraintObject.cityStays,
+      cityStays: activeConstraint.cityStays,
     };
     themeColor = C.coral;
     themeName = "Your Itinerary";
@@ -296,14 +313,14 @@ export default function DayByDay() {
     backPath = "/auto-compare";
   }
 
-  const days = buildDayPlan(itin, constraintObject);
+  const days = buildDayPlan(itin, activeConstraint);
   const selectedDay = days[Math.min(selectedDayIdx, days.length - 1)];
-  const cityNames = constraintObject.cityStays?.map((cs) => cs.cityName).join(" + ") ?? "";
+  const cityNames = activeConstraint.cityStays?.map((cs) => cs.cityName).join(" + ") ?? "";
   const dtStyle = DAY_TYPE_STYLES[selectedDay?.dayType ?? "full"];
-  const heroCity = constraintObject.cityStays?.[0]?.city || constraintObject.cities[0] || "BKK";
+  const heroCity = activeConstraint.cityStays?.[0]?.city || activeConstraint.cities?.[0] || "BKK";
 
   const handleSave = () => {
-    saveToWishlist({ type: "auto", theme: itin.name, ...itin, constraintObject, user: selectedUser?.name });
+    saveToWishlist({ type: "auto", theme: itin.name, ...itin, constraintObject: activeConstraint, user: selectedUser?.name });
     alert("Saved to My Itineraries! 🎉");
   };
   const handleCustomise = () => {
@@ -328,13 +345,15 @@ export default function DayByDay() {
       <ScapiaHeader accent="itinerary" onBack={() => navigate(backPath)} transparent />
 
       {/* immersive themed hero (bleeds up under the transparent header) */}
-      <div style={{ position: "relative", height: 200, marginTop: HERO_BLEED, backgroundImage: `url(${cityImage(heroCity)})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(160deg, ${themeColor}D9 0%, ${themeColor}A6 55%, rgba(8,14,26,0.5) 100%)` }} />
-        <div style={{ position: "absolute", left: 16, right: 16, bottom: 14, color: "#fff", fontFamily: FONT.sans }}>
-          <div style={{ fontSize: 21, fontWeight: 800 }}>🗓️ Day-by-day</div>
-          <div style={{ fontSize: 13, opacity: 0.9, marginBottom: 10 }}>{themeName}</div>
+      <div style={{ position: "relative", height: 218, marginTop: HERO_BLEED, backgroundImage: `url(${cityImage(heroCity)})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(155deg, rgba(8,14,26,0.82) 0%, ${themeColor}D9 48%, rgba(8,14,26,0.28) 100%)` }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(238,241,246,0.96) 0%, rgba(238,241,246,0) 42%)" }} />
+        <div style={{ position: "absolute", left: 16, right: 16, bottom: 18, color: "#fff", fontFamily: FONT.sans }}>
+          <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 10px", borderRadius: RADIUS.pill, background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.22)", backdropFilter: "blur(6px)", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Day-by-day plan</div>
+          <div style={{ fontFamily: FONT.serif, fontStyle: "italic", fontSize: 30, fontWeight: 650, lineHeight: 1.02, textShadow: "0 2px 12px rgba(0,0,0,0.32)", marginBottom: 8 }}>{themeName}</div>
+          <div style={{ fontSize: 13, opacity: 0.94, fontWeight: 700, marginBottom: 11 }}>{cityNames}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {[cityNames, `${days.length} days`, `${fmtShort(constraintObject.startDate)} → ${fmtShort(constraintObject.endDate)}`].map((t, i) => (
+            {[`${days.length} days`, `${fmtShort(activeConstraint.startDate)} → ${fmtShort(activeConstraint.endDate)}`, activeConstraint.groupLabel].filter(Boolean).map((t, i) => (
               <span key={i} style={{ background: "rgba(8,14,26,0.3)", borderRadius: 20, padding: "4px 11px", fontSize: 12, fontWeight: 600, backdropFilter: "blur(4px)" }}>{t}</span>
             ))}
           </div>

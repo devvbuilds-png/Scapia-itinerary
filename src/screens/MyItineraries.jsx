@@ -60,10 +60,19 @@ function timeAgo(ts) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-function ItinCard({ norm, index, isSelected, onToggleSelect, onRemove }) {
+function ItinCard({ norm, index, isSelected, onToggleSelect, onRemove, onOpen }) {
   const delta = norm.budgetDelta;
   return (
-    <div style={{ background: C.card, borderRadius: RADIUS.lg, overflow: "hidden", border: isSelected ? `2px solid ${norm.color}` : `1px solid ${C.line}`, boxShadow: isSelected ? `0 0 0 3px ${norm.color}33, ${SHADOW.cardSoft}` : SHADOW.cardSoft }}>
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen(index)}
+      onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") onOpen(index);
+      }}
+      style={{ width: "100%", padding: 0, textAlign: "left", background: C.card, borderRadius: RADIUS.lg, overflow: "hidden", border: isSelected ? `2px solid ${norm.color}` : `1px solid ${C.line}`, boxShadow: isSelected ? `0 0 0 3px ${norm.color}33, ${SHADOW.cardSoft}` : SHADOW.cardSoft, cursor: "pointer", fontFamily: FONT.sans }}
+    >
       {/* image header with theme overlay */}
       <div style={{ position: "relative", height: 96, backgroundImage: `url(${cityImage(norm.cityCode)})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(120deg, ${norm.color}E6 0%, ${norm.color}99 60%, rgba(8,14,26,0.3) 100%)` }} />
@@ -75,7 +84,7 @@ function ItinCard({ norm, index, isSelected, onToggleSelect, onRemove }) {
               <div style={{ fontFamily: FONT.sans, fontSize: 11, color: "rgba(255,255,255,0.85)" }}>{norm.type === "auto" ? "AI-built" : "Manual build"}{norm.user ? ` · ${norm.user}` : ""}</div>
             </div>
           </div>
-          <button onClick={() => onToggleSelect(index)}
+          <button onClick={(e) => { e.stopPropagation(); onToggleSelect(index); }}
             style={{ width: 30, height: 30, borderRadius: "50%", border: "none", cursor: "pointer", fontWeight: 800, fontSize: 14, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: isSelected ? "#fff" : "rgba(255,255,255,0.3)", color: isSelected ? norm.color : "#fff" }}>
             {isSelected ? "✓" : "○"}
           </button>
@@ -104,7 +113,8 @@ function ItinCard({ norm, index, isSelected, onToggleSelect, onRemove }) {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 9, borderTop: `1px solid ${C.cardAlt}` }}>
           <span style={{ fontFamily: FONT.sans, fontSize: 11, color: C.muted }}>Saved {timeAgo(norm.savedAt)}</span>
-          <button onClick={() => onRemove(index)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: FONT.sans, fontSize: 12, color: "#ef4444", padding: 0, fontWeight: 700 }}>Remove</button>
+          <span style={{ fontFamily: FONT.sans, fontSize: 12, color: C.coral, fontWeight: 800 }}>Open plan</span>
+          <button onClick={(e) => { e.stopPropagation(); onRemove(index); }} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: FONT.sans, fontSize: 12, color: "#ef4444", padding: 0, fontWeight: 700 }}>Remove</button>
         </div>
       </div>
     </div>
@@ -184,6 +194,10 @@ export default function MyItineraries() {
     setSelected((prev) => prev.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)));
   };
 
+  const handleOpen = (index) => {
+    navigate("/day-by-day", { state: { savedIndex: index, fromWishlist: true } });
+  };
+
   const compareItems = selected.length === 2 ? selected.map((i) => wishlist[i]).filter(Boolean) : [];
 
   return (
@@ -214,7 +228,7 @@ export default function MyItineraries() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {wishlist.map((item, i) => (
-            <ItinCard key={item.savedAt + "-" + i} norm={normalise(item)} index={i} isSelected={selected.includes(i)} onToggleSelect={toggleSelect} onRemove={handleRemove} />
+            <ItinCard key={item.savedAt + "-" + i} norm={normalise(item)} index={i} isSelected={selected.includes(i)} onToggleSelect={toggleSelect} onRemove={handleRemove} onOpen={handleOpen} />
           ))}
         </div>
 
