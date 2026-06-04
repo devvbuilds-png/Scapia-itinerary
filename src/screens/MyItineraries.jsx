@@ -187,7 +187,7 @@ export default function MyItineraries() {
   const compareItems = selected.length === 2 ? selected.map((i) => wishlist[i]).filter(Boolean) : [];
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
       <ScapiaHeader accent="itinerary" backTo="/" />
 
       <div style={{ padding: "12px 16px" }}>

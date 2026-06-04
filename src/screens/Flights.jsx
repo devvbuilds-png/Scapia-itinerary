@@ -6,7 +6,7 @@ import { ALL_INVENTORY, FLIGHTS_INBOUND, FLIGHTS_INTERCITY, FLIGHTS_RETURN } fro
 import AIPicksBanner from "../components/AIPicksBanner";
 import { ScapiaHeader, PrimaryButton, Badge, CoinPill, SampleNote } from "../components/ui";
 import { FLIGHT_HERO } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD, HERO_BLEED } from "../theme";
+import { C, FONT, RADIUS, SHADOW, PAGE_PAD, HERO_BLEED } from "../theme";
 
 const ALL_FLIGHTS = [...FLIGHTS_INBOUND, ...FLIGHTS_INTERCITY, ...FLIGHTS_RETURN];
 
@@ -206,7 +206,7 @@ export default function Flights() {
   const perPersonFlightBudget = constraintObject.flightBudget;
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="flights" onBack={() => navigate("/summary")} transparent />
 
       {/* hero */}

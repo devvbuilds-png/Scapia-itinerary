@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../store/AppContext";
 import { ScapiaHeader, Card, PrimaryButton, CoinPill, CoinMedallion } from "../components/ui";
 import { cityImage } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD, HERO_BLEED } from "../theme";
+import { C, FONT, RADIUS, SHADOW, PAGE_PAD, HERO_BLEED } from "../theme";
 
 const CITY_NAMES = { BKK: "Bangkok", HKT: "Phuket", CNX: "Chiang Mai" };
 
@@ -101,7 +101,7 @@ export default function ItinerarySummary() {
   const heroCity = constraintObject.cities[0] || "BKK";
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="itinerary" onBack={() => navigate("/experiences")} transparent />
 
       {/* hero trip header */}

@@ -35,7 +35,7 @@ export default function TravelProfile() {
   const coinValueInRupees = Math.floor(selectedUser.coinBalance / 5);
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: NAV_SAFE_PAD }}>
       <ScapiaHeader hideBack transparent />
 
       {/* Hero with greeting */}
@@ -64,21 +64,16 @@ export default function TravelProfile() {
 
       <div style={{ padding: "0 16px" }}>
         {/* Coins card (overlaps hero) */}
-        <Card style={{ marginTop: -14, position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: 16 }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <CoinMedallion size={26} />
-              <span style={{ fontFamily: FONT.sans, fontWeight: 800, fontSize: 24, color: C.ink }}>
-                {selectedUser.coinBalance.toLocaleString("en-IN")}
-              </span>
-            </div>
-            <div style={{ fontFamily: FONT.sans, fontSize: 12.5, color: C.sub, marginTop: 3 }}>
-              Available Scapia coins · ≈ ₹{coinValueInRupees.toLocaleString("en-IN")}
-            </div>
+        <Card style={{ marginTop: -14, position: "relative", padding: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <CoinMedallion size={26} />
+            <span style={{ fontFamily: FONT.sans, fontWeight: 800, fontSize: 24, color: C.ink }}>
+              {selectedUser.coinBalance.toLocaleString("en-IN")}
+            </span>
           </div>
-          <PrimaryButton variant="coral" full={false} size="sm" onClick={() => navigate("/onboarding")}>
-            Explore Coins ›
-          </PrimaryButton>
+          <div style={{ fontFamily: FONT.sans, fontSize: 12.5, color: C.sub, marginTop: 3 }}>
+            Available Scapia coins · ≈ ₹{coinValueInRupees.toLocaleString("en-IN")} value · 5 coins = ₹1
+          </div>
         </Card>
 
         {/* Demo: switch mock user (test harness, moved up) */}

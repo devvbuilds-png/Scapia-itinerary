@@ -5,7 +5,7 @@ import { HOTELS } from "../data/inventory";
 import AIPicksBanner from "../components/AIPicksBanner";
 import { ScapiaHeader, PrimaryButton, Badge, CoinPill, MediaCard } from "../components/ui";
 import { hotelImage } from "../data/images";
-import { C, FONT, RADIUS, NAV_SAFE_PAD } from "../theme";
+import { C, FONT, RADIUS, PAGE_PAD } from "../theme";
 
 function Stars({ count, max = 5 }) {
   return (
@@ -164,7 +164,7 @@ export default function Stays() {
   const stayPerPerson = Math.round(stayTotal / roomShare);
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="stays" onBack={() => navigate("/flights")} />
 
       <div style={{ padding: "12px 16px" }}>

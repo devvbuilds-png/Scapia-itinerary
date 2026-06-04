@@ -4,7 +4,7 @@ import { useApp } from "../store/AppContext";
 import { buildConstraintObject } from "../engine/constraintEngine";
 import { ScapiaHeader, Card, PrimaryButton, Badge, CoinMedallion } from "../components/ui";
 import { CITY_IMAGES } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD, HERO_BLEED } from "../theme";
+import { C, FONT, RADIUS, PAGE_PAD, HERO_BLEED } from "../theme";
 
 const CITY_NAMES = { BKK: "Bangkok", HKT: "Phuket", CNX: "Chiang Mai" };
 
@@ -105,7 +105,7 @@ export default function Summary() {
 
   if (!onboardingAnswers) {
     return (
-      <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+      <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
         <ScapiaHeader backTo="/" />
         <div style={{ padding: 16 }}>
           <p style={{ color: C.sub, fontFamily: FONT.sans }}>Complete onboarding first.</p>
@@ -128,7 +128,7 @@ export default function Summary() {
   const heroCity = cities[0] || "BKK";
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="itinerary" onBack={() => navigate("/onboarding")} transparent />
 
       {/* hero */}
@@ -149,6 +149,19 @@ export default function Summary() {
             {budgetIsOverridden && <div style={{ fontSize: 13, color: C.coralDark, marginTop: 3 }}>{budgetOverrideReason}</div>}
           </div>
         )}
+
+        {/* flow choice */}
+        <Card>
+          <CardTitle>How would you like to build this trip?</CardTitle>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <FlowOption icon="🤖" tone="coral" badge="Recommended" title="Let AI build it for me"
+              desc="AI assembles 3 complete itineraries tailored to your profile. Compare and pick one."
+              onClick={() => navigate("/auto-loading")} />
+            <FlowOption icon="🧭" title="I'll build it step by step"
+              desc="Browse AI-ranked flights, stays and experiences, then pick what you want."
+              onClick={() => navigate("/flights")} />
+          </div>
+        </Card>
 
         {/* trip details */}
         <Card>
@@ -204,19 +217,6 @@ export default function Summary() {
           <SplitRow label="✈️ Flights" pct={splitFlight} amount={flightBudget} reason={flightReason} color={C.navy} />
           <SplitRow label="🏨 Stays" pct={splitStay} amount={stayBudget} reason={stayReason} color={C.blue} />
           <SplitRow label="🎭 Experiences" pct={splitExp} amount={expBudget} reason={expReason} color={C.green} />
-        </Card>
-
-        {/* flow choice */}
-        <Card>
-          <CardTitle>How would you like to build this trip?</CardTitle>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <FlowOption icon="🤖" tone="coral" badge="Recommended" title="Let AI build it for me"
-              desc="AI assembles 3 complete itineraries — flights, stays & experiences — tailored to your profile. Compare and pick one."
-              onClick={() => navigate("/auto-loading")} />
-            <FlowOption icon="🧭" title="I'll build it step by step"
-              desc="Browse AI-ranked inventory at each step — flights, then stays, then experiences — and pick what you want."
-              onClick={() => navigate("/flights")} />
-          </div>
         </Card>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontFamily: FONT.sans, fontSize: 11.5, color: C.muted, marginTop: 4 }}>

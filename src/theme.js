@@ -67,15 +67,16 @@ export const SHADOW = {
 export const PAGE = {
   maxWidth: 440,
   margin: "0 auto",
-  minHeight: "100vh",
+  minHeight: "100dvh",
   background: C.page,
   fontFamily: FONT.sans,
   position: "relative",
 };
 
-// space reserved at the bottom so the floating nav never overlaps content
-// (includes the iOS home-indicator safe area)
+// Bottom padding for screens that SHOW the floating nav (Home + My Itineraries).
 export const NAV_SAFE_PAD = "calc(94px + env(safe-area-inset-bottom))";
+// Bottom padding for in-flow screens (no nav) — just clears the safe area.
+export const PAGE_PAD = "calc(28px + env(safe-area-inset-bottom))";
 
 // Header height (12px top pad + 40px control + 12px bottom pad = 64). Heroes that
 // bleed up under the transparent sticky header pull up by this much, plus the

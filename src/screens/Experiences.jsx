@@ -5,7 +5,7 @@ import { EXPERIENCES } from "../data/inventory";
 import AIPicksBanner from "../components/AIPicksBanner";
 import { ScapiaHeader, PrimaryButton, Badge, CoinPill, MediaCard } from "../components/ui";
 import { experienceImage } from "../data/images";
-import { C, FONT, RADIUS, NAV_SAFE_PAD } from "../theme";
+import { C, FONT, RADIUS, PAGE_PAD } from "../theme";
 
 const CATEGORIES = [
   { id: "All",       label: "All",       emoji: "🗺️" },
@@ -164,7 +164,7 @@ export default function Experiences() {
   const perPersonExpBudget = constraintObject.expBudget;
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="experiences" onBack={() => navigate("/stays")} />
 
       <div style={{ padding: "12px 16px" }}>

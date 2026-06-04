@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../store/AppContext";
 import { ScapiaHeader, PrimaryButton, InfoCallout } from "../components/ui";
 import { CITY_IMAGES } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD } from "../theme";
+import { C, FONT, RADIUS, SHADOW, PAGE_PAD } from "../theme";
 
 const CITIES = [
   { id: "BKK", label: "Bangkok", emoji: "🏙️", desc: "City, temples, nightlife" },
@@ -189,7 +189,7 @@ export default function Onboarding() {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD, display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD, display: "flex", flexDirection: "column" }}>
       <ScapiaHeader accent="itinerary" onBack={() => (step > 1 ? setStep((s) => s - 1) : navigate("/"))} />
 
       <div style={{ padding: 16, flex: 1, display: "flex", flexDirection: "column" }}>
@@ -275,7 +275,7 @@ export default function Onboarding() {
           )}
         </div>
 
-        <div style={{ marginTop: 24 }}>
+        <div style={stickyCtaStyle}>
           <PrimaryButton variant="coral" disabled={!canNext()} onClick={handleNext}>
             {step === TOTAL_STEPS ? "Build my itinerary →" : "Next →"}
           </PrimaryButton>
@@ -297,12 +297,23 @@ const hintStyle = {
 };
 const dateLabelStyle = { fontSize: 13, fontWeight: 700, color: C.body, fontFamily: FONT.sans };
 const dateInputStyle = {
-  padding: "13px 14px",
-  border: `1.5px solid ${C.line}`,
+  padding: "14px 42px 14px 14px",
+  border: `1.5px solid ${C.blue}`,
   borderRadius: RADIUS.md,
   fontSize: 16,
   color: C.ink,
   outline: "none",
   fontFamily: FONT.sans,
   background: C.card,
+  boxShadow: SHADOW.cardSoft,
+  minHeight: 50,
+  colorScheme: "light",
+  cursor: "pointer",
+};
+const stickyCtaStyle = {
+  position: "sticky",
+  bottom: "env(safe-area-inset-bottom)",
+  margin: "18px -16px 0",
+  padding: "12px 16px 0",
+  background: `linear-gradient(to top, ${C.page} 70%, rgba(238,241,246,0))`,
 };

@@ -10,9 +10,15 @@ const TABS = [
  * Two-tab floating pill nav (Scapia-style). Home/profile + Itinerary.
  * Fixed-centred within the mobile frame. Purely navigational.
  */
+// Shown only on the two "hub" screens. Every in-flow screen has a header back
+// button, so the nav would just collide with each screen's primary CTA.
+const SHOW_ON = ["/", "/my-itineraries"];
+
 export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  if (!SHOW_ON.includes(pathname)) return null;
 
   return (
     <div

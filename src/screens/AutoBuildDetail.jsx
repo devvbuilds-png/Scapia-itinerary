@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useApp } from "../store/AppContext";
 import { ScapiaHeader, Badge, CoinPill, CoinMedallion, PrimaryButton, Card, MediaCard } from "../components/ui";
 import { cityImage, hotelImage, experienceImage } from "../data/images";
-import { C, FONT, RADIUS, SHADOW, NAV_SAFE_PAD, HERO_BLEED } from "../theme";
+import { C, FONT, RADIUS, SHADOW, PAGE_PAD, HERO_BLEED } from "../theme";
 
 function fmt(dateStr) {
   if (!dateStr) return "—";
@@ -126,7 +126,7 @@ export default function AutoBuildDetail() {
 
   if (!itin || !constraintObject) {
     return (
-      <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+      <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
         <ScapiaHeader accent="itinerary" backTo="/auto-compare" />
         <div style={{ padding: 32, textAlign: "center", fontFamily: FONT.sans }}>
           <div style={{ fontSize: 13, color: C.sub, marginBottom: 16 }}>Itinerary not found.</div>
@@ -173,7 +173,7 @@ export default function AutoBuildDetail() {
   const heroCity = itin.cityStays?.[0]?.city || constraintObject.cities[0] || "BKK";
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: NAV_SAFE_PAD }}>
+    <div style={{ minHeight: "100dvh", paddingBottom: PAGE_PAD }}>
       <ScapiaHeader accent="itinerary" onBack={() => navigate("/auto-compare")} transparent />
 
       {/* image hero with theme overlay */}
